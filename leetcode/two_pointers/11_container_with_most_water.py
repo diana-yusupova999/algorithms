@@ -18,22 +18,18 @@ from typing import List
 
 
 def max_container(height: List[int]) -> int:
-    max_h = -1
-    idx = []
-    for i in range(len(height)):
-        if height[i] == max_h:
-            idx.append(i)
-        if height[i] > max_h:
-            max_h = height[i]
-            idx = [i]
-    res = 0
-    for i in idx:
-        for j in range(len(height)):
-            n = math.fabs(i-j)
-            tmp = height[j] * n
-            if tmp > res:
-                res = tmp
-    return res
+    left_idx = 0
+    right_idx = len(height) - 1
+    max_val = 0
+
+    while left_idx < right_idx:
+        cur_val = min(height[left_idx], height[right_idx]) * (right_idx - left_idx)
+        max_val = max(max_val, cur_val)
+        if height[left_idx] < height[right_idx]:
+            left_idx += 1
+        else:
+            right_idx -= 1
+    return max_val
 
 
-print(max_container([1, 1, 1, 1, 1]))
+print(max_container([1,8,6,2,5,4,8,3,7]))
