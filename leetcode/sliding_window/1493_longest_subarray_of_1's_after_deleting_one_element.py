@@ -21,4 +21,27 @@ from typing import List
 
 
 def longest_subarray(nums: List[int]) -> int:
-    pass
+    k = 1
+    if k == len(nums):
+        return 0
+
+    if len(set(nums)) == 1:
+        if nums[0]:
+            return len(nums) - 1
+        return 0
+
+    zeroes = []
+    for i, val in enumerate(nums):
+        if not val:
+            zeroes.append(i)
+
+    if len(zeroes) <= k:
+        return len(nums) - 1
+
+    max_len = max(zeroes[k], (len(nums) - zeroes[-k - 1] - 1))
+    for i in range(len(zeroes) - k - 1):
+        len_tmp = zeroes[i + k + 1] - zeroes[i] - 1
+        if len_tmp > max_len:
+            max_len = len_tmp
+
+    return max_len - 1

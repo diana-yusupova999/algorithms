@@ -17,6 +17,24 @@ from typing import List
 
 
 def longest_ones(nums: List[int], k: int) -> int:
+    if k == len(nums):
+        return len(nums)
+
     if len(set(nums)) == 1:
         return len(nums) * nums[0]
-    pass
+
+    zeroes = []
+    for i, val in enumerate(nums):
+        if not val:
+            zeroes.append(i)
+
+    if len(zeroes) <= k:
+        return len(nums)
+
+    max_len = max(zeroes[k], (len(nums) - zeroes[-k - 1] - 1))
+    for i in range(len(zeroes) - k - 1):
+        len_tmp = zeroes[i + k + 1] - zeroes[i] - 1
+        if len_tmp > max_len:
+            max_len = len_tmp
+
+    return max_len
